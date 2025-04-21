@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Payment, Reservation, Stadium , ApiUrls
 from .serializers import ApiUrlsSerializer, PaymentSerializer, ReservationSerializer, StadiumSerializer
+from django.views.decorators.csrf import csrf_exempt # for skip token
 
 
+@csrf_exempt
 @api_view(['GET'])
 def api_urls(request):
     api_urls = ApiUrls.objects.all()
@@ -14,12 +16,8 @@ def api_urls(request):
 
 
 
-
-
-
-
-
 # Get the list of stadiums (GET request) and Create a new stadium (POST request)
+@csrf_exempt
 @api_view(['GET', 'POST'])
 def stadium_list(request):
     if request.method == 'GET':
@@ -36,6 +34,7 @@ def stadium_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Get, Update, or Delete a specific stadium (GET, PUT, DELETE requests)
+@csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def stadium_detail(request, pk):
     try:
